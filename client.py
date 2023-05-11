@@ -1,3 +1,4 @@
+# Chad Fusco
 import json
 from typing import Any
 from urllib.request import Request, urlopen
@@ -39,8 +40,7 @@ if __name__ == '__main__':
     """
 
     # TODO: Set your base server url according to how you are running your server.
-    base_server_url = "http://localhost:8080"  # For local server, or "http://127.0.0.1:8080", or whichever host and port you chose.
-    # base_server_url = "https://project_name.account_name.repl.co"  # Replace with the URL given by Replit. Keep the https protocol (not http).
+    base_server_url = "http://localhost:8080"
     intended_path = "/"
     full_server_url = base_server_url + intended_path
 
