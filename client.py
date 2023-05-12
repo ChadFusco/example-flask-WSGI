@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     # TEST POST NUMS
     intended_path = '/nums'
-    sample_data_to_send = [1, 2, 3, 4]
+    sample_data_to_send = [1, 2, 3]
     full_server_url = base_server_url + intended_path
     print_result(Client.send_json('POST', full_server_url, sample_data_to_send))
 
@@ -75,8 +75,23 @@ if __name__ == '__main__':
     print_result(Client.send_json('GET', full_server_url)) # should return [1, 2, 3]
 
     # TEST PUT NUMS
-    sample_data_to_send = [5, 6]
+    sample_data_to_send = [4, 5]
     print_result(Client.send_json('PUT', full_server_url, sample_data_to_send))
 
     # TEST GET NUMS
     print_result(Client.send_json('GET', full_server_url)) # should return [1, 2, 3, 4, 5]
+
+    # TEST GET NUMS/SUM
+    intended_path = '/nums/sum'
+    full_server_url = base_server_url + intended_path
+    print_result(Client.send_json('GET', full_server_url)) # should return 15
+
+    # TEST POST NUMS - ERROR CASE
+    intended_path = '/nums'
+    sample_data_to_send = 'hello'
+    full_server_url = base_server_url + intended_path
+    print_result(Client.send_json('POST', full_server_url, sample_data_to_send))
+
+    # TEST PUT NUMS
+    sample_data_to_send = ['wrong', 'type']
+    print_result(Client.send_json('PUT', full_server_url, sample_data_to_send))

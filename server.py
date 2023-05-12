@@ -34,6 +34,24 @@ def index():
                 'data': [4, 5],
                 'result': 'success',
             },
+            {
+                'path': '/nums/sum',
+                'method': 'GET',
+                'data': None,
+                'result': 15,
+            },
+            {
+                'path': '/nums',
+                'method': 'POST',
+                'data': 'hello',
+                'result': {'error': 'Failed request.'},
+            },
+            {
+                'path': '/nums',
+                'method': 'PUT',
+                'data': ['wrong', 'type'],
+                'result': {'error': 'Failed request.'},
+            },
         ]
     }
 
@@ -95,6 +113,11 @@ def put_nums():
         print(f"{data=}")
         result = error_msg("Failed request.")
     return result
+
+
+@app.get('/nums/sum')
+def get_sum_nums():
+    return jsonify(sum(nums))
 
 
 def error_msg(msg: str) -> dict:
