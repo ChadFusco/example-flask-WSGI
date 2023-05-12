@@ -9,10 +9,13 @@ class Client:
     FAILED_REQUEST = object()  # Look below to see how this sentinel is used.
 
     @classmethod
-    def send_json(cls, method, url, python_obj) -> Any:
+    def send_json(cls, method, url, python_obj=None) -> Any:
         """Converts the python_obj parameter into a JSON string and sends that JSON to the server. Returns server's response converted back from JSON to a Python object."""
-        json_string = json.dumps(python_obj)
-        json_bytes = json_string.encode('utf-8')
+        if python_obj is not None:
+            json_string = json.dumps(python_obj)
+            json_bytes = json_string.encode('utf-8')
+        else:
+            json_bytes = b''
         request = Request(
             url=url,
             method=method,
@@ -57,6 +60,23 @@ if __name__ == '__main__':
 
     print_result(Client.send_json('GET', full_server_url, sample_data_to_send))
 
+    # TEST MATH_OLD
     intended_path = '/math_old'
     full_server_url = base_server_url + intended_path
     print_result(Client.send_json('POST', full_server_url, sample_data_to_send))
+
+    # TEST POST NUMS
+    intended_path = '/nums'
+    sample_data_to_send = [1, 2, 3, 4]
+    full_server_url = base_server_url + intended_path
+    print_result(Client.send_json('POST', full_server_url, sample_data_to_send))
+
+    # TEST GET NUMS
+    print_result(Client.send_json('GET', full_server_url)) # should return [1, 2, 3]
+
+    # TEST PUT NUMS
+    sample_data_to_send = [5, 6]
+    print_result(Client.send_json('PUT', full_server_url, sample_data_to_send))
+
+    # TEST GET NUMS
+    print_result(Client.send_json('GET', full_server_url)) # should return [1, 2, 3, 4, 5]

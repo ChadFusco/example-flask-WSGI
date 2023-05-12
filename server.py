@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 app = Flask(__name__)
 
+nums = []
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -10,19 +11,28 @@ def index():
         'sample_calls': [
             {
                 'path': '/',
+                'method': 'GET',
                 'data': None,
                 'result': 'Returns this information.',
             },
             # TODO: Replace the examples below with 6+ distinct sample calls to your API.
             {
-                'path': '/math',
-                'data': {'func': '+', 'args': [1, 2, 3, 4]},
-                'result': {'sum': 10},
+                'path': '/nums',
+                'method': 'POST',
+                'data': [1, 2, 3],
+                'result': 'success',
             },
             {
-                'path': '/math',
-                'data': {'func': '*', 'args': [1, 2, 3, 4]},
-                'result': {'product': 24},
+                'path': '/nums',
+                'method': 'GET',
+                'data': None,
+                'result': [1, 2, 3],
+            },
+            {
+                'path': '/nums',
+                'method': 'PUT',
+                'data': [4, 5],
+                'result': 'success',
             },
         ]
     }
@@ -52,9 +62,52 @@ def math_service_old():
     return result
 
 
+@app.get('/nums')
+def get_nums():
+    return nums
+
+
+@app.post('/nums')
+def post_nums():
+    global nums
+    data = request.json
+    result = jsonify('success')
+    try:
+        check_is_num_list(data)
+        nums = data
+    except Exception as err:
+        print(err)
+        print(f"{data=}")
+        result = error_msg("Failed request.")
+    return result
+
+
+@app.put('/nums')
+def put_nums():
+    global nums
+    data = request.json
+    result = jsonify('success')
+    try:
+        check_is_num_list(data)
+        nums.extend(data)
+    except Exception as err:
+        print(err)
+        print(f"{data=}")
+        result = error_msg("Failed request.")
+    return result
+
+
 def error_msg(msg: str) -> dict:
     """Wraps the error message in a JSON-friendly dict for clear communication."""
     return {"error": msg}
+
+
+def check_is_num_list(my_list):
+    if type(my_list) != list:
+        raise TypeError
+    for num in my_list:
+        if type(num) != int and type(num) != float:
+            raise TypeError
 
 
 if __name__ == '__main__':
