@@ -9,13 +9,13 @@ class Client:
     FAILED_REQUEST = object()  # Look below to see how this sentinel is used.
 
     @classmethod
-    def send_json(cls, url, python_obj) -> Any:
+    def send_json(cls, method, url, python_obj) -> Any:
         """Converts the python_obj parameter into a JSON string and sends that JSON to the server. Returns server's response converted back from JSON to a Python object."""
         json_string = json.dumps(python_obj)
         json_bytes = json_string.encode('utf-8')
         request = Request(
             url=url,
-            method='GET',
+            method=method,
             headers={
                 'Content-Length': len(json_bytes),
                 'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     # TODO: Create the data you want to send.
     sample_data_to_send = {'abc': [1, 2, 3]}  # Any combination of JSON-compatible Python objects: int, float, str, list, dict, True/False/None
 
-    result = Client.send_json(full_server_url, sample_data_to_send)
+    result = Client.send_json('GET', full_server_url, sample_data_to_send)
     if result is Client.FAILED_REQUEST:
         print(f"REQUEST FAILED for {sample_data_to_send=}")
     else:

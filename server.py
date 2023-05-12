@@ -29,8 +29,8 @@ def index():
 
 
 # TODO: Replace the '/math' route and math_service() function with your microservice routes and functions.
-@app.route('/math', methods=['POST'])
-def math_service():
+@app.route('/math_old', methods=['POST'])
+def math_service_old():
     request_data = request.json
     try:
         function = request_data['func']
