@@ -34,6 +34,14 @@ class Client:
         return request_result
 
 
+def print_result(result):
+    if result is Client.FAILED_REQUEST:
+        print(f"REQUEST FAILED for {sample_data_to_send=}")
+    else:
+        print(f"REQUEST SUCCEEDED:")
+        print(result)
+
+
 if __name__ == '__main__':
     """
     THIS IS HOW YOU TEST YOUR MICROSERVICE
@@ -45,11 +53,10 @@ if __name__ == '__main__':
     full_server_url = base_server_url + intended_path
 
     # TODO: Create the data you want to send.
-    sample_data_to_send = {'abc': [1, 2, 3]}  # Any combination of JSON-compatible Python objects: int, float, str, list, dict, True/False/None
+    sample_data_to_send = {'func': '+', 'args': [1, 2, 3]}  # Any combination of JSON-compatible Python objects: int, float, str, list, dict, True/False/None
 
-    result = Client.send_json('GET', full_server_url, sample_data_to_send)
-    if result is Client.FAILED_REQUEST:
-        print(f"REQUEST FAILED for {sample_data_to_send=}")
-    else:
-        print(f"REQUEST SUCCEEDED:")
-        print(result)
+    print_result(Client.send_json('GET', full_server_url, sample_data_to_send))
+
+    intended_path = '/math_old'
+    full_server_url = base_server_url + intended_path
+    print_result(Client.send_json('POST', full_server_url, sample_data_to_send))
